@@ -417,12 +417,11 @@
                 
                 <!-- Setup GAS URL Field -->
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Google Apps Script Web App URL (選填/Optional):</label>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Google Apps Script Web App URL:</label>
                     <div class="flex gap-2">
-                        <input type="text" id="gasUrlInput" class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-[11px] outline-none focus:border-orange-500" placeholder="https://script.google.com/macros/s/AKfycby3-hXj0E7CwmT3QGgHIaDKC5QOZ4mNExjExz5OhagUskIsdyA5XSqcJO0jRunrLY-nGA/exec">
+                        <input type="text" id="gasUrlInput" class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-[11px] outline-none focus:border-orange-500">
                         <button type="button" onclick="saveGasUrl()" class="bg-orange-500 hover:bg-orange-600 text-slate-900 font-bold px-3 py-2 rounded-lg text-xs transition">儲存 URL</button>
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-1">如未輸入，系統提交時將自動以模擬連線展示 Frontend Retry 機制。</p>
                 </div>
 
                 <!-- Backend Code Preview with LockService -->
@@ -434,26 +433,23 @@
                         </button>
                     </div>
                     <pre class="bg-slate-950 p-3 rounded-xl border border-slate-800 overflow-x-auto font-mono text-[11px] text-slate-300 leading-relaxed"><code id="gasCodeText">function doPost(e) {
-  // 1. 取得排隊鎖 (Lock) 防止多人同時寫入 Sheet 時發生衝突/覆蓋
   var lock = LockService.getScriptLock();
   
   try {
-    // 最多排隊等待 10 秒
     lock.waitLock(10000); 
     
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
     
-    // 2. 寫入 Google Sheet 訂單紀錄
     sheet.appendRow([
       new Date(),
       data.initial,
       data.day1Meal,
       data.day1Drink,
-      data.day1Req,
+      data.day1Req || 'N/A',
       data.day2Meal,
       data.day2Drink,
-      data.day2Req,
+      data.day2Req || 'N/A',
       data.totalEst
     ]);
     
@@ -463,14 +459,12 @@
     })).setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
-    // 伺服器繁忙，回傳 error 讓前端自動進行 Retry 重試
     return ContentService.createTextOutput(JSON.stringify({ 
       result: "error", 
-      message: "Server busy, please retry: " + error.toString() 
+      message: error.toString() 
     })).setMimeType(ContentService.MimeType.JSON);
     
   } finally {
-    // 3. 解除鎖定
     lock.releaseLock();
   }
 }</code></pre>
@@ -507,10 +501,11 @@
             { id: 'MCD_JUICE', label: '橙汁 (中) Orange Juice (M)', price: 0 }
         ];
 
-        // State Management
+        // State Management & Default Hardcoded API URL
+        const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycby3-hXj0E7CwmT3QGgHIaDKC5QOZ4mNExjExz5OhagUskIsdyA5XSqcJO0jRunrLY-nGA/exec';
         let currentStep = 1;
         let day2DrinkManuallyTouched = false;
-        let gasEndpoint = localStorage.getItem('gas_web_url') || '';
+        let gasEndpoint = localStorage.getItem('gas_web_url') || DEFAULT_GAS_URL;
 
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
@@ -524,9 +519,7 @@
                 }
             });
 
-            if (gasEndpoint) {
-                document.getElementById('gasUrlInput').value = gasEndpoint;
-            }
+            document.getElementById('gasUrlInput').value = gasEndpoint;
 
             // Populate initial drinks
             renderDrinksForDay(1);
@@ -549,9 +542,9 @@
 
         function saveGasUrl() {
             const url = document.getElementById('gasUrlInput').value.trim();
-            gasEndpoint = url;
-            localStorage.setItem('gas_web_url', url);
-            alert('Google Apps Script URL 已儲存！ / GAS URL Saved!');
+            gasEndpoint = url || DEFAULT_GAS_URL;
+            localStorage.setItem('gas_web_url', gasEndpoint);
+            alert('Google Apps Script URL 已更新！ / GAS URL Saved!');
         }
 
         function copyGasCode() {
@@ -769,14 +762,17 @@
             const btnBack = document.getElementById('btnBackToStep2');
             const statusAlert = document.getElementById('statusAlert');
 
+            const d1DrinkElem = document.getElementById('day1Drink');
+            const d2DrinkElem = document.getElementById('day2Drink');
+
             const payload = {
                 initial: document.getElementById('initialInput').value.trim(),
                 day1Meal: document.getElementById('day1Meal').options[document.getElementById('day1Meal').selectedIndex].text,
-                day1Drink: document.getElementById('day1Drink').value ? document.getElementById('day1Drink').options[document.getElementById('day1Drink').selectedIndex].text : 'N/A',
-                day1Req: document.getElementById('day1Req').value.trim(),
+                day1Drink: d1DrinkElem && d1DrinkElem.options.length > 0 && d1DrinkElem.selectedIndex >= 0 ? d1DrinkElem.options[d1DrinkElem.selectedIndex].text : 'N/A',
+                day1Req: document.getElementById('day1Req').value.trim() || 'N/A',
                 day2Meal: document.getElementById('day2Meal').options[document.getElementById('day2Meal').selectedIndex].text,
-                day2Drink: document.getElementById('day2Drink').value ? document.getElementById('day2Drink').options[document.getElementById('day2Drink').selectedIndex].text : 'N/A',
-                day2Req: document.getElementById('day2Req').value.trim(),
+                day2Drink: d2DrinkElem && d2DrinkElem.options.length > 0 && d2DrinkElem.selectedIndex >= 0 ? d2DrinkElem.options[d2DrinkElem.selectedIndex].text : 'N/A',
+                day2Req: document.getElementById('day2Req').value.trim() || 'N/A',
                 totalEst: document.getElementById('grandTotalDisplay').textContent
             };
 
@@ -795,30 +791,23 @@
                 statusAlert.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> 正在連線伺服器並寫入訂單... (嘗試 ${attempt}/${maxRetries})`;
 
                 try {
-                    if (!gasEndpoint) {
-                        await new Promise(resolve => setTimeout(resolve, 800));
+                    const response = await fetch(gasEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    if (result.result === 'success') {
                         success = true;
                         break;
                     } else {
-                        const response = await fetch(gasEndpoint, {
-                            method: 'POST',
-                            mode: 'cors',
-                            headers: { 'Content-Type': 'text/plain' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        const result = await response.json();
-                        if (result.result === 'success') {
-                            success = true;
-                            break;
-                        } else {
-                            throw new Error(result.message || 'Server busy');
-                        }
+                        throw new Error(result.message || 'Server busy');
                     }
                 } catch (err) {
                     console.warn(`Attempt ${attempt} failed:`, err);
                     if (attempt < maxRetries) {
-                        statusAlert.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> 伺服器繁忙，1 秒後自動重試... (已嘗試 ${attempt}/${maxRetries})`;
+                        statusAlert.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> 伺服器連線中，1 秒後自動重試... (已嘗試 ${attempt}/${maxRetries})`;
                         await new Promise(resolve => setTimeout(resolve, 1000));
                     }
                 }
@@ -830,7 +819,7 @@
                 btn.className = "w-full bg-emerald-500 text-slate-950 font-extrabold py-4 px-6 rounded-2xl shadow-xl transition-all duration-200 text-base flex items-center justify-center space-x-2";
 
                 statusAlert.className = "max-w-lg mx-auto rounded-xl p-4 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-center";
-                statusAlert.innerHTML = `<i class="fa-solid fa-circle-check text-base mr-1"></i> 訂單已成功寫入系統！請截圖保存通行證。 / Order successfully submitted! Please screenshot your pass.`;
+                statusAlert.innerHTML = `<i class="fa-solid fa-circle-check text-base mr-1"></i> 訂單已成功寫入 Google Sheet！請截圖保存通行證。 / Order successfully submitted! Please screenshot your pass.`;
             } else {
                 btn.disabled = false;
                 btnBack.classList.remove('pointer-events-none', 'opacity-50');
