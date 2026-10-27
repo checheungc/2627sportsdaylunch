@@ -50,7 +50,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-bold tracking-tight text-white leading-tight">陸運會訂飯系統</h1>
-                    <p class="text-xs text-slate-400 font-medium">Sports Day Lunch Ordering System (11/12 & 11/13)</p>
+                    <p class="text-xs text-slate-400 font-medium">Sports Day Lunch Ordering System (12/11 & 13/11)</p>
                 </div>
             </div>
             <div class="hidden sm:block text-right">
@@ -99,7 +99,7 @@
                 <div class="space-y-4">
                     <div>
                         <label for="initialInput" class="block text-sm font-medium text-slate-200 mb-2">
-                            你的initial / Your Initial <span class="text-orange-500">*</span>
+                            你的 initial / Your Initial <span class="text-orange-500">*</span>
                         </label>
                         <input type="text" id="initialInput" class="w-full bg-slate-900/90 border-2 border-slate-700 focus:border-orange-500 focus:ring-0 rounded-xl px-4 py-3.5 text-lg font-bold text-orange-400 tracking-wider text-center uppercase transition-all duration-200 outline-none" autocomplete="off" maxlength="10">
                         <p id="initialError" class="text-xs text-red-400 mt-2 hidden flex items-center justify-center space-x-1">
@@ -130,13 +130,13 @@
             <!-- Two-Column Grid for Day 1 and Day 2 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- DAY 1 COLUMN (11/12) -->
+                <!-- DAY 1 COLUMN (12/11) -->
                 <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
                             <div class="flex items-center space-x-2">
                                 <span class="bg-orange-500 text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded-md">Day 1</span>
-                                <h3 class="font-bold text-white text-base">11月12日 (星期三)</h3>
+                                <h3 class="font-bold text-white text-base">12/11 (星期四)</h3>
                             </div>
                             <span class="text-xs text-slate-400">第一日 / Day 1</span>
                         </div>
@@ -147,24 +147,24 @@
                                 <label class="block text-xs font-semibold text-slate-300 mb-1.5">主餐選擇 / Select Meal</label>
                                 <select id="day1Meal" onchange="handleDay1MealChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:border-orange-500 focus:ring-0 outline-none">
                                     <optgroup label="茶餐廳熱款 / Cha Chaan Teng Meals ($59 - $67)">
-                                        <option value="A" data-price="59">A. $59 滑蛋粟米斑腩飯</option>
-                                        <option value="B" data-price="61">B. $61 白汁雞扒煎蛋飯</option>
-                                        <option value="C" data-price="63">C. $63 咖哩牛肉飯 配太陽蛋</option>
-                                        <option value="D" data-price="62">D. $62 欖菜肉鬆蝦仁炒飯</option>
-                                        <option value="E" data-price="65">E. $65 鮮茄焗豬扒飯</option>
-                                        <option value="F" data-price="63">F. $63 北菇蒸滑雞（客飯）</option>
-                                        <option value="G" data-price="67">G. $67 川味回鍋肉（客飯）</option>
+                                        <option value="A" data-price="59">A. $59 滑蛋粟米斑腩飯 Fish Fillet with Sweet Corn and Scrambled Egg on Rice</option>
+                                        <option value="B" data-price="61">B. $61 白菌汁雞扒煎蛋飯 Chicken Chop and Fried Egg with Mushroom Sauce on Rice</option>
+                                        <option value="C" data-price="63">C. $63 咖喱牛肉飯 配太陽蛋 Curry Beef Rice with Sunny-Side-Up Egg</option>
+                                        <option value="D" data-price="62">D. $62 欖菜肉鬆蝦仁炒飯 Fried Rice with Chinese Pickles, Minced Pork, and Shrimps</option>
+                                        <option value="E" data-price="65">E. $65 鮮茄焗豬扒飯 Baked Pork Chop with Fresh Tomato Sauce on Rice</option>
+                                        <option value="F" data-price="63">F. $63 北菇蒸滑雞（客飯） Steamed Chicken with Shiitake Mushrooms (Served with Rice)</option>
+                                        <option value="G" data-price="67">G. $67 川味回鍋肉（客飯） Sichuan-Style Twice-Cooked Pork (Served with Rice)</option>
                                     </optgroup>
                                     <optgroup label="麥當勞超值套餐 / McDonald's Meals">
-                                        <option value="1" data-price="45">1. 巨無霸餐 Big Mac Meal</option>
-                                        <option value="2" data-price="45">2. 魚柳飽餐 Filet-O-Fish Meal</option>
-                                        <option value="3" data-price="48">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
-                                        <option value="4" data-price="42">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
-                                        <option value="5" data-price="44">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
-                                        <option value="6" data-price="46">6. 脆香雞翼 McNuggets/McWings Meal</option>
-                                        <option value="7" data-price="48">7. 凱撒沙律餐 Caesar Salad Meal</option>
-                                        <option value="8" data-price="35">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
-                                        <option value="9" data-price="35">9. 麥芝蛋飽開心樂園餐 Egg & Cheese Burger Happy Meal</option>
+                                        <option value="1" data-price="0">1. 巨無霸餐 Big Mac Meal</option>
+                                        <option value="2" data-price="0">2. 魚柳飽餐 Filet-O-Fish Meal</option>
+                                        <option value="3" data-price="0">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
+                                        <option value="4" data-price="0">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
+                                        <option value="5" data-price="0">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
+                                        <option value="6" data-price="0">6. 脆香雞翼 McWings Meal</option>
+                                        <option value="7" data-price="0">7. 凱撒沙律餐 Caesar Salad Meal</option>
+                                        <option value="8" data-price="0">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
+                                        <option value="9" data-price="0">9. 麥芝蛋飽開心樂園餐 Egg and Cheese Burger Happy Meal</option>
                                     </optgroup>
                                     <optgroup label="其他 / Other">
                                         <option value="0" data-price="0">0. 不訂飯 No Lunch Needed</option>
@@ -199,13 +199,13 @@
                     </div>
                 </div>
 
-                <!-- DAY 2 COLUMN (11/13) -->
+                <!-- DAY 2 COLUMN (13/11) -->
                 <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
                             <div class="flex items-center space-x-2">
                                 <span class="bg-orange-500 text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded-md">Day 2</span>
-                                <h3 class="font-bold text-white text-base">11月13日 (星期四)</h3>
+                                <h3 class="font-bold text-white text-base">13/11 (星期五)</h3>
                             </div>
                             <span class="text-xs text-slate-400">第二日 / Day 2</span>
                         </div>
@@ -216,24 +216,24 @@
                                 <label class="block text-xs font-semibold text-slate-300 mb-1.5">主餐選擇 / Select Meal</label>
                                 <select id="day2Meal" onchange="handleDay2MealChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:border-orange-500 focus:ring-0 outline-none">
                                     <optgroup label="茶餐廳熱款 / Cha Chaan Teng Meals ($59 - $67)">
-                                        <option value="A" data-price="59">A. $59 魚香茄子飯</option>
-                                        <option value="B" data-price="61">B. $61 白汁魚柳火腿飯</option>
-                                        <option value="C" data-price="60">C. $60 咖哩海鮮飯 配太陽蛋</option>
-                                        <option value="D" data-price="62">D. $62 黑椒牛柳絲炒意粉</option>
-                                        <option value="E" data-price="65">E. $65 焗葡汁雞皇飯</option>
-                                        <option value="F" data-price="63">F. $63 梅子蒸排骨（客飯）</option>
-                                        <option value="G" data-price="67">G. $67 京都豬扒（客飯）</option>
+                                        <option value="A" data-price="59">A. $59 魚香茄子飯 Eggplant with Minced Pork in Garlic Sauce on Rice</option>
+                                        <option value="B" data-price="61">B. $61 白汁魚柳火腿飯 Fish Fillet and Ham with Cream Sauce on Rice</option>
+                                        <option value="C" data-price="60">C. $60 咖喱海鮮飯 配太陽蛋 Curry Seafood Rice with Sunny-Side-Up Egg</option>
+                                        <option value="D" data-price="62">D. $62 黑椒牛柳絲炒意粉 Stir-Fried Spaghetti with Shredded Beef Fillet in Black Pepper Sauce</option>
+                                        <option value="E" data-price="65">E. $65 焗葡汁雞皇飯 Baked Chicken with Portuguese Sauce on Rice</option>
+                                        <option value="F" data-price="63">F. $63 梅子蒸排骨（客飯） Steamed Pork Ribs with Plum Sauce (Served with Rice)</option>
+                                        <option value="G" data-price="67">G. $67 京都豬扒（客飯） Peking-Style Pork Chop (Served with Rice)</option>
                                     </optgroup>
                                     <optgroup label="麥當勞超值套餐 / McDonald's Meals">
-                                        <option value="1" data-price="45">1. 巨無霸餐 Big Mac Meal</option>
-                                        <option value="2" data-price="45">2. 魚柳飽餐 Filet-O-Fish Meal</option>
-                                        <option value="3" data-price="48">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
-                                        <option value="4" data-price="42">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
-                                        <option value="5" data-price="44">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
-                                        <option value="6" data-price="46">6. 脆香雞翼 McNuggets/McWings Meal</option>
-                                        <option value="7" data-price="48">7. 凱撒沙律餐 Caesar Salad Meal</option>
-                                        <option value="8" data-price="35">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
-                                        <option value="9" data-price="35">9. 麥芝蛋飽開心樂園餐 Egg & Cheese Burger Happy Meal</option>
+                                        <option value="1" data-price="0">1. 巨無霸餐 Big Mac Meal</option>
+                                        <option value="2" data-price="0">2. 魚柳飽餐 Filet-O-Fish Meal</option>
+                                        <option value="3" data-price="0">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
+                                        <option value="4" data-price="0">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
+                                        <option value="5" data-price="0">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
+                                        <option value="6" data-price="0">6. 脆香雞翼 McWings Meal</option>
+                                        <option value="7" data-price="0">7. 凱撒沙律餐 Caesar Salad Meal</option>
+                                        <option value="8" data-price="0">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
+                                        <option value="9" data-price="0">9. 麥芝蛋飽開心樂園餐 Egg and Cheese Burger Happy Meal</option>
                                     </optgroup>
                                     <optgroup label="其他 / Other">
                                         <option value="0" data-price="0">0. 不訂飯 No Lunch Needed</option>
@@ -330,7 +330,7 @@
                         <!-- Day 1 Summary -->
                         <div class="bg-slate-50/90 border border-slate-200 rounded-xl p-3.5 space-y-1">
                             <div class="flex items-center justify-between">
-                                <span class="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">Day 1 (11/12)</span>
+                                <span class="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">Day 1 (12/11)</span>
                                 <span id="ticketDay1Price" class="text-xs font-bold text-slate-700">$59</span>
                             </div>
                             <div id="ticketDay1Meal" class="font-bold text-sm text-slate-900">--</div>
@@ -346,7 +346,7 @@
                         <!-- Day 2 Summary -->
                         <div class="bg-slate-50/90 border border-slate-200 rounded-xl p-3.5 space-y-1">
                             <div class="flex items-center justify-between">
-                                <span class="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">Day 2 (11/13)</span>
+                                <span class="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">Day 2 (13/11)</span>
                                 <span id="ticketDay2Price" class="text-xs font-bold text-slate-700">$59</span>
                             </div>
                             <div id="ticketDay2Meal" class="font-bold text-sm text-slate-900">--</div>
@@ -664,7 +664,7 @@
                 day1DrinkPrice = parseInt(day1DrinkSelect.options[day1DrinkSelect.selectedIndex].dataset.price || '0');
             }
             const day1Total = day1MealSelect.value === '0' ? 0 : (day1BasePrice + day1DrinkPrice);
-            document.getElementById('day1Subtotal').textContent = `$${day1Total}`;
+            document.getElementById('day1Subtotal').textContent = isMcDonalds(day1MealSelect.value) ? '待確認 / TBD' : `$${day1Total}`;
 
             // Day 2
             const day2MealSelect = document.getElementById('day2Meal');
@@ -677,11 +677,12 @@
                 day2DrinkPrice = parseInt(day2DrinkSelect.options[day2DrinkSelect.selectedIndex].dataset.price || '0');
             }
             const day2Total = day2MealSelect.value === '0' ? 0 : (day2BasePrice + day2DrinkPrice);
-            document.getElementById('day2Subtotal').textContent = `$${day2Total}`;
+            document.getElementById('day2Subtotal').textContent = isMcDonalds(day2MealSelect.value) ? '待確認 / TBD' : `$${day2Total}`;
 
             // Grand Total
             const grandTotal = day1Total + day2Total;
-            document.getElementById('grandTotalDisplay').textContent = `$${grandTotal}`;
+            const isAnyMcD = isMcDonalds(day1MealSelect.value) || isMcDonalds(day2MealSelect.value);
+            document.getElementById('grandTotalDisplay').textContent = isAnyMcD ? `$${grandTotal} + 麥當勞待確認` : `$${grandTotal}`;
 
             return { day1Total, day2Total, grandTotal };
         }
@@ -798,7 +799,6 @@
                 statusAlert.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> 正在連線伺服器並寫入訂單... (嘗試 ${attempt}/${maxRetries})`;
 
                 try {
-                    // Safe fetch for Google Apps Script without triggering CORS preflight OPTIONS
                     const response = await fetch(gasEndpoint, {
                         method: 'POST',
                         body: JSON.stringify(payload)
