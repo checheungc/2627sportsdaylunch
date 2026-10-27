@@ -505,7 +505,14 @@
         const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycby3-hXj0E7CwmT3QGgHIaDKC5QOZ4mNExjExz5OhagUskIsdyA5XSqcJO0jRunrLY-nGA/exec';
         let currentStep = 1;
         let day2DrinkManuallyTouched = false;
-        let gasEndpoint = localStorage.getItem('gas_web_url') || DEFAULT_GAS_URL;
+        
+        // Auto-sanitize local storage if bad URL stored
+        let savedUrl = localStorage.getItem('gas_web_url');
+        if (!savedUrl || !savedUrl.startsWith('https://script.google.com')) {
+            localStorage.setItem('gas_web_url', DEFAULT_GAS_URL);
+            savedUrl = DEFAULT_GAS_URL;
+        }
+        let gasEndpoint = savedUrl;
 
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
@@ -791,9 +798,9 @@
                 statusAlert.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> 正在連線伺服器並寫入訂單... (嘗試 ${attempt}/${maxRetries})`;
 
                 try {
+                    // Safe fetch for Google Apps Script without triggering CORS preflight OPTIONS
                     const response = await fetch(gasEndpoint, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(payload)
                     });
 
