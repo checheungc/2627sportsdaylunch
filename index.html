@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>陸運會訂飯系統 / Sports Day Lunch Ordering System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#090d16',
+                        },
+                        brand: {
+                            orange: '#f97316',
+                            orangeHover: '#ea580c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #0f172a;
+        }
+        .ticket-pattern {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 12px 12px;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white pb-12">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-navy-900 via-navy-800 to-indigo-950 border-b border-slate-800 sticky top-0 z-30 shadow-xl">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center text-white text-xl shadow-lg shadow-orange-500/30">
+                    <i class="fa-solid font-bold fa-trophy"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white leading-tight">陸運會訂飯系統</h1>
+                    <p class="text-xs text-slate-400 font-medium">Sports Day Lunch Ordering System (11/12 & 11/13)</p>
+                </div>
+            </div>
+            <div class="hidden sm:block text-right">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                    <span class="w-2 h-2 rounded-full bg-orange-500 mr-1.5 animate-pulse"></span>系統運作中 / System Ready
+                </span>
+            </div>
+        </div>
+
+        <!-- Step Progress Indicator -->
+        <div class="max-w-4xl mx-auto px-4 pb-3">
+            <div class="grid grid-cols-3 gap-2 text-center text-xs font-semibold">
+                <div id="step-tab-1" class="py-2 border-b-2 border-orange-500 text-orange-400 transition-all duration-300 flex items-center justify-center space-x-1">
+                    <span class="w-5 h-5 rounded-full bg-orange-500 text-slate-900 font-bold text-[10px] flex items-center justify-center">1</span>
+                    <span class="hidden sm:inline">輸入 Initial / Your Initial</span>
+                    <span class="sm:hidden">Initial</span>
+                </div>
+                <div id="step-tab-2" class="py-2 border-b-2 border-slate-700 text-slate-500 transition-all duration-300 flex items-center justify-center space-x-1">
+                    <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 font-bold text-[10px] flex items-center justify-center">2</span>
+                    <span class="hidden sm:inline">選擇餐點 / Select Meals</span>
+                    <span class="sm:hidden">餐點 / Meals</span>
+                </div>
+                <div id="step-tab-3" class="py-2 border-b-2 border-slate-700 text-slate-500 transition-all duration-300 flex items-center justify-center space-x-1">
+                    <span class="w-5 h-5 rounded-full bg-slate-700 text-slate-300 font-bold text-[10px] flex items-center justify-center">3</span>
+                    <span class="hidden sm:inline">核對與提交 / Review & Submit</span>
+                    <span class="sm:hidden">提交 / Submit</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
+
+        <!-- STEP 1: INITIAL INPUT -->
+        <section id="step-1" class="block space-y-6">
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-md max-w-lg mx-auto">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-slate-700/50 rounded-2xl mx-auto flex items-center justify-center text-orange-400 text-2xl mb-3 border border-slate-600">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">請先輸入你的 Initial</h2>
+                    <p class="text-xs text-slate-400 mt-1">Enter your initial to start meal selection</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="initialInput" class="block text-sm font-medium text-slate-200 mb-2">
+                            你的initial / Your Initial <span class="text-orange-500">*</span>
+                        </label>
+                        <input type="text" id="initialInput" class="w-full bg-slate-900/90 border-2 border-slate-700 focus:border-orange-500 focus:ring-0 rounded-xl px-4 py-3.5 text-lg font-bold text-orange-400 tracking-wider text-center uppercase transition-all duration-200 outline-none" autocomplete="off" maxlength="10">
+                        <p id="initialError" class="text-xs text-red-400 mt-2 hidden flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>請輸入有效的 Initial / Please enter your initial</span>
+                        </p>
+                    </div>
+
+                    <button type="button" id="btnGoToStep2" onclick="handleStep1Next()" class="w-full bg-orange-500 hover:bg-orange-600 text-slate-900 font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-500/20 transition-all duration-200 flex items-center justify-center space-x-2 text-base">
+                        <span>下一頁 (選擇餐點) / Next (Select Meals)</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2: MEAL SELECTION (2-COLUMN LAYOUT) -->
+        <section id="step-2" class="hidden space-y-6">
+            
+            <!-- McDonald's Price Confirmation Banner Notice -->
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 flex items-start space-x-3 text-amber-300 text-xs sm:text-sm">
+                <i class="fa-solid fa-circle-info text-amber-400 text-lg flex-shrink-0 mt-0.5"></i>
+                <div class="leading-relaxed">
+                    <strong>提示 / Notice:</strong> 麥當勞餐因選項眾多，CCC會稍候與閣下確實價錢 / McDonald's meal prices will be confirmed later by CCC due to various options.
+                </div>
+            </div>
+
+            <!-- Two-Column Grid for Day 1 and Day 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- DAY 1 COLUMN (11/12) -->
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-orange-500 text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded-md">Day 1</span>
+                                <h3 class="font-bold text-white text-base">11月12日 (星期三)</h3>
+                            </div>
+                            <span class="text-xs text-slate-400">第一日 / Day 1</span>
+                        </div>
+
+                        <!-- Day 1 Meal Dropdown -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">主餐選擇 / Select Meal</label>
+                                <select id="day1Meal" onchange="handleDay1MealChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:border-orange-500 focus:ring-0 outline-none">
+                                    <optgroup label="茶餐廳熱款 / Cha Chaan Teng Meals ($59 - $67)">
+                                        <option value="A" data-price="59">A. $59 滑蛋粟米斑腩飯</option>
+                                        <option value="B" data-price="61">B. $61 白汁雞扒煎蛋飯</option>
+                                        <option value="C" data-price="63">C. $63 咖哩牛肉飯 配太陽蛋</option>
+                                        <option value="D" data-price="62">D. $62 欖菜肉鬆蝦仁炒飯</option>
+                                        <option value="E" data-price="65">E. $65 鮮茄焗豬扒飯</option>
+                                        <option value="F" data-price="63">F. $63 北菇蒸滑雞（客飯）</option>
+                                        <option value="G" data-price="67">G. $67 川味回鍋肉（客飯）</option>
+                                    </optgroup>
+                                    <optgroup label="麥當勞超值套餐 / McDonald's Meals">
+                                        <option value="1" data-price="45">1. 巨無霸餐 Big Mac Meal</option>
+                                        <option value="2" data-price="45">2. 魚柳飽餐 Filet-O-Fish Meal</option>
+                                        <option value="3" data-price="48">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
+                                        <option value="4" data-price="42">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
+                                        <option value="5" data-price="44">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
+                                        <option value="6" data-price="46">6. 脆香雞翼 McNuggets/McWings Meal</option>
+                                        <option value="7" data-price="48">7. 凱撒沙律餐 Caesar Salad Meal</option>
+                                        <option value="8" data-price="35">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
+                                        <option value="9" data-price="35">9. 麥芝蛋飽開心樂園餐 Egg & Cheese Burger Happy Meal</option>
+                                    </optgroup>
+                                    <optgroup label="其他 / Other">
+                                        <option value="0" data-price="0">0. 不訂飯 No Lunch Needed</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Day 1 Drink Dropdown -->
+                            <div id="day1DrinkWrapper">
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">飲品選擇 / Select Drink</label>
+                                <select id="day1Drink" onchange="handleDay1DrinkChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:border-orange-500 focus:ring-0 outline-none">
+                                </select>
+                            </div>
+
+                            <!-- Day 1 Special Request (McDonald's ONLY) -->
+                            <div id="day1ReqContainer" class="hidden bg-slate-900/60 border border-slate-700/60 rounded-xl p-3 space-y-2">
+                                <label class="block text-xs font-semibold text-orange-400">麥當勞特別要求 / Special Requests</label>
+                                <div class="flex flex-wrap gap-1.5 mb-2">
+                                    <button type="button" onclick="addQuickTag('day1Req', '薯條轉粟米')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條轉粟米</button>
+                                    <button type="button" onclick="addQuickTag('day1Req', '薯條走鹽')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條走鹽</button>
+                                    <button type="button" onclick="addQuickTag('day1Req', '轉大薯大飲品')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 轉大薯大飲</button>
+                                    <button type="button" onclick="addQuickTag('day1Req', '飲品走冰')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 飲品走冰</button>
+                                </div>
+                                <input type="text" id="day1Req" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500" placeholder="可自行輸入特別備註...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs">
+                        <span class="text-slate-400">Day 1 預估金額:</span>
+                        <span id="day1Subtotal" class="font-bold text-orange-400 text-sm">$59</span>
+                    </div>
+                </div>
+
+                <!-- DAY 2 COLUMN (11/13) -->
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-orange-500 text-slate-900 font-extrabold text-xs px-2.5 py-1 rounded-md">Day 2</span>
+                                <h3 class="font-bold text-white text-base">11月13日 (星期四)</h3>
+                            </div>
+                            <span class="text-xs text-slate-400">第二日 / Day 2</span>
+                        </div>
+
+                        <!-- Day 2 Meal Dropdown -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">主餐選擇 / Select Meal</label>
+                                <select id="day2Meal" onchange="handleDay2MealChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:border-orange-500 focus:ring-0 outline-none">
+                                    <optgroup label="茶餐廳熱款 / Cha Chaan Teng Meals ($59 - $67)">
+                                        <option value="A" data-price="59">A. $59 魚香茄子飯</option>
+                                        <option value="B" data-price="61">B. $61 白汁魚柳火腿飯</option>
+                                        <option value="C" data-price="60">C. $60 咖哩海鮮飯 配太陽蛋</option>
+                                        <option value="D" data-price="62">D. $62 黑椒牛柳絲炒意粉</option>
+                                        <option value="E" data-price="65">E. $65 焗葡汁雞皇飯</option>
+                                        <option value="F" data-price="63">F. $63 梅子蒸排骨（客飯）</option>
+                                        <option value="G" data-price="67">G. $67 京都豬扒（客飯）</option>
+                                    </optgroup>
+                                    <optgroup label="麥當勞超值套餐 / McDonald's Meals">
+                                        <option value="1" data-price="45">1. 巨無霸餐 Big Mac Meal</option>
+                                        <option value="2" data-price="45">2. 魚柳飽餐 Filet-O-Fish Meal</option>
+                                        <option value="3" data-price="48">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
+                                        <option value="4" data-price="42">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
+                                        <option value="5" data-price="44">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
+                                        <option value="6" data-price="46">6. 脆香雞翼 McNuggets/McWings Meal</option>
+                                        <option value="7" data-price="48">7. 凱撒沙律餐 Caesar Salad Meal</option>
+                                        <option value="8" data-price="35">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
+                                        <option value="9" data-price="35">9. 麥芝蛋飽開心樂園餐 Egg & Cheese Burger Happy Meal</option>
+                                    </optgroup>
+                                    <optgroup label="其他 / Other">
+                                        <option value="0" data-price="0">0. 不訂飯 No Lunch Needed</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Day 2 Drink Dropdown -->
+                            <div id="day2DrinkWrapper">
+                                <label class="block text-xs font-semibold text-slate-300 mb-1.5">
+                                    飲品選擇 / Select Drink 
+                                    <span id="autoSyncBadge" class="text-[10px] bg-slate-700 text-orange-400 px-1.5 py-0.5 rounded ml-1">自動同步 Day 1</span>
+                                </label>
+                                <select id="day2Drink" onchange="handleDay2DrinkChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100 focus:border-orange-500 focus:ring-0 outline-none">
+                                </select>
+                            </div>
+
+                            <!-- Day 2 Special Request (McDonald's ONLY) -->
+                            <div id="day2ReqContainer" class="hidden bg-slate-900/60 border border-slate-700/60 rounded-xl p-3 space-y-2">
+                                <label class="block text-xs font-semibold text-orange-400">麥當勞特別要求 / Special Requests</label>
+                                <div class="flex flex-wrap gap-1.5 mb-2">
+                                    <button type="button" onclick="addQuickTag('day2Req', '薯條轉粟米')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條轉粟米</button>
+                                    <button type="button" onclick="addQuickTag('day2Req', '薯條走鹽')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條走鹽</button>
+                                    <button type="button" onclick="addQuickTag('day2Req', '轉大薯大飲品')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 轉大薯大飲</button>
+                                    <button type="button" onclick="addQuickTag('day2Req', '飲品走冰')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 飲品走冰</button>
+                                </div>
+                                <input type="text" id="day2Req" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500" placeholder="可自行輸入特別備註...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs">
+                        <span class="text-slate-400">Day 2 預估金額:</span>
+                        <span id="day2Subtotal" class="font-bold text-orange-400 text-sm">$59</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Total Estimated Summary Bar & Navigation -->
+            <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+                <div>
+                    <span class="text-xs text-slate-400">兩日預算總計 / Total Estimated:</span>
+                    <div class="text-2xl font-extrabold text-orange-400" id="grandTotalDisplay">$118</div>
+                </div>
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <button type="button" onclick="switchStep(1)" class="w-1/2 sm:w-auto px-5 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-semibold transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> 上一步
+                    </button>
+                    <button type="button" onclick="handleStep2Next()" class="w-1/2 sm:w-auto px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-slate-900 text-sm font-bold shadow-lg shadow-orange-500/20 transition flex items-center justify-center space-x-2">
+                        <span>結算與核對 / Next</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 3: TICKET PASS SUMMARY & FAILSAFE SUBMISSION -->
+        <section id="step-3" class="hidden space-y-6">
+            
+            <!-- Pass Ticket Container -->
+            <div class="max-w-lg mx-auto bg-slate-100 text-slate-800 rounded-3xl overflow-hidden shadow-2xl relative border-4 border-slate-800">
+                <!-- Top Header Band -->
+                <div class="bg-slate-900 text-white p-5 flex items-center justify-between border-b border-slate-800">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 bg-orange-500 rounded-xl flex items-center justify-center text-slate-900 font-bold text-lg">
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-extrabold tracking-wider text-sm uppercase text-orange-400">Sports Day Lunch Ticket Pass</h3>
+                            <p class="text-[11px] text-slate-400 font-medium">陸運會訂飯確認通行證</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] bg-slate-800 text-orange-400 px-2 py-1 rounded font-mono border border-slate-700">2026 OFFICIAL</span>
+                    </div>
+                </div>
+
+                <!-- Ticket Body -->
+                <div class="p-6 space-y-5 bg-white ticket-pattern">
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+                        <div>
+                            <span class="text-xs uppercase tracking-wider font-bold text-slate-400">Initial</span>
+                            <div id="ticketInitial" class="text-2xl font-black text-slate-900 tracking-widest mt-0.5">--</div>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-600 text-xl font-bold">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                    </div>
+
+                    <!-- Day 1 & Day 2 Summary Breakdown -->
+                    <div class="space-y-3">
+                        <!-- Day 1 Summary -->
+                        <div class="bg-slate-50/90 border border-slate-200 rounded-xl p-3.5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">Day 1 (11/12)</span>
+                                <span id="ticketDay1Price" class="text-xs font-bold text-slate-700">$59</span>
+                            </div>
+                            <div id="ticketDay1Meal" class="font-bold text-sm text-slate-900">--</div>
+                            <div id="ticketDay1Drink" class="text-xs text-slate-600 flex items-center space-x-1">
+                                <i class="fa-solid fa-mug-hot text-orange-500 text-[10px]"></i>
+                                <span>--</span>
+                            </div>
+                            <div id="ticketDay1ReqWrapper" class="text-[11px] text-orange-700 font-medium hidden">
+                                備註: <span id="ticketDay1Req"></span>
+                            </div>
+                        </div>
+
+                        <!-- Day 2 Summary -->
+                        <div class="bg-slate-50/90 border border-slate-200 rounded-xl p-3.5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">Day 2 (11/13)</span>
+                                <span id="ticketDay2Price" class="text-xs font-bold text-slate-700">$59</span>
+                            </div>
+                            <div id="ticketDay2Meal" class="font-bold text-sm text-slate-900">--</div>
+                            <div id="ticketDay2Drink" class="text-xs text-slate-600 flex items-center space-x-1">
+                                <i class="fa-solid fa-mug-hot text-orange-500 text-[10px]"></i>
+                                <span>--</span>
+                            </div>
+                            <div id="ticketDay2ReqWrapper" class="text-[11px] text-orange-700 font-medium hidden">
+                                備註: <span id="ticketDay2Req"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashed Perforation Line -->
+                    <div class="relative py-2">
+                        <div class="border-b-2 border-dashed border-slate-300"></div>
+                        <div class="absolute -left-9 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-800 rounded-full"></div>
+                        <div class="absolute -right-9 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-800 rounded-full"></div>
+                    </div>
+
+                    <!-- Grand Total Display -->
+                    <div class="flex items-center justify-between pt-1">
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">預計總金額 / Total</span>
+                            <p class="text-[10px] text-slate-400">*麥當勞餐最終金額由CCC確認</p>
+                        </div>
+                        <div id="ticketGrandTotal" class="text-3xl font-black text-orange-600">$118</div>
+                    </div>
+                </div>
+
+                <!-- Stub Barcode Deco -->
+                <div class="bg-slate-100 px-6 pb-4 pt-1 flex items-center justify-between border-t border-slate-200 text-slate-400">
+                    <div class="font-mono text-[10px] tracking-widest uppercase">SPORTS-DAY-PASS-2026</div>
+                    <i class="fa-solid fa-barcode text-3xl text-slate-700"></i>
+                </div>
+            </div>
+
+            <!-- Failsafe Status Log Message Box -->
+            <div id="statusAlert" class="hidden max-w-lg mx-auto rounded-xl p-4 text-xs font-semibold transition-all duration-200"></div>
+
+            <!-- Action Buttons for Step 3 -->
+            <div class="max-w-lg mx-auto space-y-3">
+                <button type="button" id="btnSubmitOrder" onclick="submitOrderWithFailsafe()" class="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-slate-700 disabled:text-slate-400 text-slate-900 font-extrabold py-4 px-6 rounded-2xl shadow-xl shadow-orange-500/20 transition-all duration-200 text-base flex items-center justify-center space-x-2">
+                    <i id="submitIcon" class="fa-solid fa-paper-plane"></i>
+                    <span id="submitBtnText">確認提交訂單 / Confirm & Submit Order</span>
+                </button>
+
+                <button type="button" id="btnBackToStep2" onclick="switchStep(2)" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3 rounded-xl border border-slate-700 transition text-xs">
+                    <i class="fa-solid fa-pen mr-1"></i> 返回修改訂單 / Modify Order
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- DEVELOPER & GAS FAILSAFE BACKEND DRAWER PANEL -->
+    <footer class="max-w-4xl mx-auto px-4 w-full mt-8">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 text-xs text-slate-400">
+            <div class="flex items-center justify-between cursor-pointer" onclick="toggleGasPanel()">
+                <div class="flex items-center space-x-2 text-slate-300 font-semibold">
+                    <i class="fa-solid fa-shield-halved text-orange-400"></i>
+                    <span>系統雙重保險說明與 Google Apps Script (GAS) 後端設定</span>
+                </div>
+                <i id="gasChevron" class="fa-solid fa-chevron-down text-slate-500 transition-transform duration-300"></i>
+            </div>
+
+            <div id="gasPanelContent" class="hidden mt-4 pt-4 border-t border-slate-800 space-y-4">
+                
+                <!-- Setup GAS URL Field -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Google Apps Script Web App URL (選填/Optional):</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="gasUrlInput" class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 font-mono text-[11px] outline-none focus:border-orange-500" placeholder="https://script.google.com/macros/s/AKfycby3-hXj0E7CwmT3QGgHIaDKC5QOZ4mNExjExz5OhagUskIsdyA5XSqcJO0jRunrLY-nGA/exec">
+                        <button type="button" onclick="saveGasUrl()" class="bg-orange-500 hover:bg-orange-600 text-slate-900 font-bold px-3 py-2 rounded-lg text-xs transition">儲存 URL</button>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-1">如未輸入，系統提交時將自動以模擬連線展示 Frontend Retry 機制。</p>
+                </div>
+
+                <!-- Backend Code Preview with LockService -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="font-bold text-orange-400 text-[11px]">後端防競爭寫入 GAS 腳本 (已整合 LockService) :</span>
+                        <button type="button" onclick="copyGasCode()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700">
+                            <i class="fa-regular fa-copy mr-1"></i>複製程式碼
+                        </button>
+                    </div>
+                    <pre class="bg-slate-950 p-3 rounded-xl border border-slate-800 overflow-x-auto font-mono text-[11px] text-slate-300 leading-relaxed"><code id="gasCodeText">function doPost(e) {
+  // 1. 取得排隊鎖 (Lock) 防止多人同時寫入 Sheet 時發生衝突/覆蓋
+  var lock = LockService.getScriptLock();
+  
+  try {
+    // 最多排隊等待 10 秒
+    lock.waitLock(10000); 
+    
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    
+    // 2. 寫入 Google Sheet 訂單紀錄
+    sheet.appendRow([
+      new Date(),
+      data.initial,
+      data.day1Meal,
+      data.day1Drink,
+      data.day1Req,
+      data.day2Meal,
+      data.day2Drink,
+      data.day2Req,
+      data.totalEst
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ 
+      result: "success", 
+      message: "Order recorded successfully" 
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    // 伺服器繁忙，回傳 error 讓前端自動進行 Retry 重試
+    return ContentService.createTextOutput(JSON.stringify({ 
+      result: "error", 
+      message: "Server busy, please retry: " + error.toString() 
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } finally {
+    // 3. 解除鎖定
+    lock.releaseLock();
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Data Definitions for Meals
+        const CHA_CHAAN_TENG_DRINKS = [
+            { id: 'HOT_LEMON_TEA', label: '熱檸茶 Hot Lemon Tea (預設小甜)', price: 0 },
+            { id: 'HOT_LEMON_WATER', label: '熱檸水 Hot Lemon Water (預設小甜)', price: 0 },
+            { id: 'HOT_MILK_TEA', label: '熱奶茶 Hot Milk Tea (預設小甜)', price: 0 },
+            { id: 'HOT_COFFEE', label: '熱咖啡 Hot Coffee', price: 0 },
+            { id: 'ICED_LEMON_TEA', label: '凍檸茶 Iced Lemon Tea (預設小甜) (+$3)', price: 3 },
+            { id: 'ICED_LEMON_WATER', label: '凍檸水 Iced Lemon Water (預設小甜) (+$3)', price: 3 },
+            { id: 'ICED_MILK_TEA', label: '凍奶茶 Iced Milk Tea (預設小甜) (+$3)', price: 3 },
+            { id: 'ICED_COFFEE', label: '凍咖啡 Iced Coffee (+$3)', price: 3 },
+            { id: 'COKE', label: '可口可樂 Coca-Cola (+$3)', price: 3 },
+            { id: 'ZERO_COKE', label: '零度可樂 Coca-Cola Zero (+$3)', price: 3 },
+            { id: 'SPRITE', label: '雪碧 Sprite (+$3)', price: 3 },
+            { id: 'NONE', label: '無飲品 / No Drink', price: 0 }
+        ];
+
+        const MCDONALDS_DRINKS = [
+            { id: 'MCD_COKE', label: '可口可樂 (中) Coca-Cola (M)', price: 0 },
+            { id: 'MCD_ZERO', label: '零度可樂 (中) Coca-Cola Zero (M)', price: 0 },
+            { id: 'MCD_SPRITE', label: '雪碧 (中) Sprite (M)', price: 0 },
+            { id: 'MCD_HOT_TEA', label: '熱檸茶 Hot Lemon Tea (預設小甜)', price: 0 },
+            { id: 'MCD_ICED_TEA', label: '凍檸茶 Iced Lemon Tea (預設小甜)', price: 0 },
+            { id: 'MCD_HOT_COFFEE', label: '熱咖啡 Hot Coffee', price: 0 },
+            { id: 'MCD_JUICE', label: '橙汁 (中) Orange Juice (M)', price: 0 }
+        ];
+
+        // State Management
+        let currentStep = 1;
+        let day2DrinkManuallyTouched = false;
+        let gasEndpoint = localStorage.getItem('gas_web_url') || '';
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialInput = document.getElementById('initialInput');
+            
+            // Auto capitalize & sanitize input
+            initialInput.addEventListener('input', function() {
+                this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                if (this.value.trim() !== '') {
+                    document.getElementById('initialError').classList.add('hidden');
+                }
+            });
+
+            if (gasEndpoint) {
+                document.getElementById('gasUrlInput').value = gasEndpoint;
+            }
+
+            // Populate initial drinks
+            renderDrinksForDay(1);
+            renderDrinksForDay(2);
+            calculateTotals();
+        });
+
+        // Toggle Developer Panel
+        function toggleGasPanel() {
+            const content = document.getElementById('gasPanelContent');
+            const chevron = document.getElementById('gasChevron');
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        function saveGasUrl() {
+            const url = document.getElementById('gasUrlInput').value.trim();
+            gasEndpoint = url;
+            localStorage.setItem('gas_web_url', url);
+            alert('Google Apps Script URL 已儲存！ / GAS URL Saved!');
+        }
+
+        function copyGasCode() {
+            const codeText = document.getElementById('gasCodeText').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            alert('GAS 後端程式碼已複製至剪貼簿！');
+        }
+
+        // Helper: Check if meal is McDonald's
+        function isMcDonalds(mealVal) {
+            return ['1','2','3','4','5','6','7','8','9'].includes(mealVal);
+        }
+
+        // Render Drink Options
+        function renderDrinksForDay(day) {
+            const mealVal = document.getElementById(`day${day}Meal`).value;
+            const drinkSelect = document.getElementById(`day${day}Drink`);
+            const reqContainer = document.getElementById(`day${day}ReqContainer`);
+            const drinkWrapper = document.getElementById(`day${day}DrinkWrapper`);
+
+            drinkSelect.innerHTML = '';
+
+            if (mealVal === '0') {
+                drinkWrapper.classList.add('hidden');
+                reqContainer.classList.add('hidden');
+            } else if (isMcDonalds(mealVal)) {
+                drinkWrapper.classList.remove('hidden');
+                reqContainer.classList.remove('hidden');
+                MCDONALDS_DRINKS.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.id;
+                    opt.textContent = d.label;
+                    opt.dataset.price = d.price;
+                    drinkSelect.appendChild(opt);
+                });
+            } else {
+                drinkWrapper.classList.remove('hidden');
+                reqContainer.classList.add('hidden');
+                CHA_CHAAN_TENG_DRINKS.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.id;
+                    opt.textContent = d.label;
+                    opt.dataset.price = d.price;
+                    drinkSelect.appendChild(opt);
+                });
+            }
+        }
+
+        // Event Handlers for Meals & Drinks
+        function handleDay1MealChange() {
+            renderDrinksForDay(1);
+            if (!day2DrinkManuallyTouched) {
+                syncDay1DrinkToDay2();
+            }
+            calculateTotals();
+        }
+
+        function handleDay2MealChange() {
+            renderDrinksForDay(2);
+            calculateTotals();
+        }
+
+        function handleDay1DrinkChange() {
+            if (!day2DrinkManuallyTouched) {
+                syncDay1DrinkToDay2();
+            }
+            calculateTotals();
+        }
+
+        function handleDay2DrinkChange() {
+            day2DrinkManuallyTouched = true;
+            document.getElementById('autoSyncBadge').classList.add('hidden');
+            calculateTotals();
+        }
+
+        function syncDay1DrinkToDay2() {
+            const day1Meal = document.getElementById('day1Meal').value;
+            const day2Meal = document.getElementById('day2Meal').value;
+
+            if (isMcDonalds(day1Meal) === isMcDonalds(day2Meal) && day1Meal !== '0' && day2Meal !== '0') {
+                const day1DrinkVal = document.getElementById('day1Drink').value;
+                document.getElementById('day2Drink').value = day1DrinkVal;
+            }
+        }
+
+        function addQuickTag(inputId, tagText) {
+            const input = document.getElementById(inputId);
+            if (input.value.includes(tagText)) return;
+            if (input.value.trim() === '') {
+                input.value = tagText;
+            } else {
+                input.value += ', ' + tagText;
+            }
+        }
+
+        function calculateTotals() {
+            // Day 1
+            const day1MealSelect = document.getElementById('day1Meal');
+            const day1MealOpt = day1MealSelect.options[day1MealSelect.selectedIndex];
+            const day1BasePrice = parseInt(day1MealOpt.dataset.price || '0');
+            
+            const day1DrinkSelect = document.getElementById('day1Drink');
+            let day1DrinkPrice = 0;
+            if (day1DrinkSelect && day1DrinkSelect.selectedIndex >= 0) {
+                day1DrinkPrice = parseInt(day1DrinkSelect.options[day1DrinkSelect.selectedIndex].dataset.price || '0');
+            }
+            const day1Total = day1MealSelect.value === '0' ? 0 : (day1BasePrice + day1DrinkPrice);
+            document.getElementById('day1Subtotal').textContent = `$${day1Total}`;
+
+            // Day 2
+            const day2MealSelect = document.getElementById('day2Meal');
+            const day2MealOpt = day2MealSelect.options[day2MealSelect.selectedIndex];
+            const day2BasePrice = parseInt(day2MealOpt.dataset.price || '0');
+
+            const day2DrinkSelect = document.getElementById('day2Drink');
+            let day2DrinkPrice = 0;
+            if (day2DrinkSelect && day2DrinkSelect.selectedIndex >= 0) {
+                day2DrinkPrice = parseInt(day2DrinkSelect.options[day2DrinkSelect.selectedIndex].dataset.price || '0');
+            }
+            const day2Total = day2MealSelect.value === '0' ? 0 : (day2BasePrice + day2DrinkPrice);
+            document.getElementById('day2Subtotal').textContent = `$${day2Total}`;
+
+            // Grand Total
+            const grandTotal = day1Total + day2Total;
+            document.getElementById('grandTotalDisplay').textContent = `$${grandTotal}`;
+
+            return { day1Total, day2Total, grandTotal };
+        }
+
+        function switchStep(step) {
+            currentStep = step;
+            [1, 2, 3].forEach(s => {
+                const stepElem = document.getElementById(`step-${s}`);
+                const tabElem = document.getElementById(`step-tab-${s}`);
+                
+                if (s === step) {
+                    stepElem.classList.remove('hidden');
+                    tabElem.className = "py-2 border-b-2 border-orange-500 text-orange-400 transition-all duration-300 flex items-center justify-center space-x-1";
+                } else {
+                    stepElem.classList.add('hidden');
+                    tabElem.className = "py-2 border-b-2 border-slate-700 text-slate-500 transition-all duration-300 flex items-center justify-center space-x-1";
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function handleStep1Next() {
+            const initial = document.getElementById('initialInput').value.trim();
+            if (!initial) {
+                document.getElementById('initialError').classList.remove('hidden');
+                document.getElementById('initialInput').focus();
+                return;
+            }
+            document.getElementById('initialError').classList.add('hidden');
+            switchStep(2);
+        }
+
+        function handleStep2Next() {
+            updateTicketPass();
+            switchStep(3);
+        }
+
+        function updateTicketPass() {
+            const initial = document.getElementById('initialInput').value.trim();
+            document.getElementById('ticketInitial').textContent = initial;
+
+            // Day 1
+            const d1MealSelect = document.getElementById('day1Meal');
+            const d1MealText = d1MealSelect.options[d1MealSelect.selectedIndex].text;
+            const d1DrinkSelect = document.getElementById('day1Drink');
+            const d1DrinkText = d1DrinkSelect && d1DrinkSelect.selectedIndex >= 0 ? d1DrinkSelect.options[d1DrinkSelect.selectedIndex].text : '無飲品';
+            const d1Req = document.getElementById('day1Req').value.trim();
+            
+            document.getElementById('ticketDay1Meal').textContent = d1MealText;
+            document.getElementById('ticketDay1Drink').querySelector('span').textContent = d1DrinkText;
+            document.getElementById('ticketDay1Price').textContent = document.getElementById('day1Subtotal').textContent;
+            
+            if (d1Req && isMcDonalds(d1MealSelect.value)) {
+                document.getElementById('ticketDay1ReqWrapper').classList.remove('hidden');
+                document.getElementById('ticketDay1Req').textContent = d1Req;
+            } else {
+                document.getElementById('ticketDay1ReqWrapper').classList.add('hidden');
+            }
+
+            // Day 2
+            const d2MealSelect = document.getElementById('day2Meal');
+            const d2MealText = d2MealSelect.options[d2MealSelect.selectedIndex].text;
+            const d2DrinkSelect = document.getElementById('day2Drink');
+            const d2DrinkText = d2DrinkSelect && d2DrinkSelect.selectedIndex >= 0 ? d2DrinkSelect.options[d2DrinkSelect.selectedIndex].text : '無飲品';
+            const d2Req = document.getElementById('day2Req').value.trim();
+
+            document.getElementById('ticketDay2Meal').textContent = d2MealText;
+            document.getElementById('ticketDay2Drink').querySelector('span').textContent = d2DrinkText;
+            document.getElementById('ticketDay2Price').textContent = document.getElementById('day2Subtotal').textContent;
+
+            if (d2Req && isMcDonalds(d2MealSelect.value)) {
+                document.getElementById('ticketDay2ReqWrapper').classList.remove('hidden');
+                document.getElementById('ticketDay2Req').textContent = d2Req;
+            } else {
+                document.getElementById('ticketDay2ReqWrapper').classList.add('hidden');
+            }
+
+            document.getElementById('ticketGrandTotal').textContent = document.getElementById('grandTotalDisplay').textContent;
+        }
+
+        async function submitOrderWithFailsafe() {
+            const btn = document.getElementById('btnSubmitOrder');
+            const btnText = document.getElementById('submitBtnText');
+            const submitIcon = document.getElementById('submitIcon');
+            const btnBack = document.getElementById('btnBackToStep2');
+            const statusAlert = document.getElementById('statusAlert');
+
+            const payload = {
+                initial: document.getElementById('initialInput').value.trim(),
+                day1Meal: document.getElementById('day1Meal').options[document.getElementById('day1Meal').selectedIndex].text,
+                day1Drink: document.getElementById('day1Drink').value ? document.getElementById('day1Drink').options[document.getElementById('day1Drink').selectedIndex].text : 'N/A',
+                day1Req: document.getElementById('day1Req').value.trim(),
+                day2Meal: document.getElementById('day2Meal').options[document.getElementById('day2Meal').selectedIndex].text,
+                day2Drink: document.getElementById('day2Drink').value ? document.getElementById('day2Drink').options[document.getElementById('day2Drink').selectedIndex].text : 'N/A',
+                day2Req: document.getElementById('day2Req').value.trim(),
+                totalEst: document.getElementById('grandTotalDisplay').textContent
+            };
+
+            btn.disabled = true;
+            btnBack.classList.add('pointer-events-none', 'opacity-50');
+            submitIcon.className = "fa-solid fa-circle-notch fa-spin";
+
+            statusAlert.classList.remove('hidden', 'bg-red-500/10', 'text-red-400', 'border-red-500/30', 'bg-green-500/10', 'text-green-400', 'border-green-500/30');
+            statusAlert.classList.add('bg-orange-500/10', 'text-orange-400', 'border', 'border-orange-500/30');
+
+            const maxRetries = 3;
+            let success = false;
+
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                btnText.textContent = `提交中... (嘗試 ${attempt}/${maxRetries}) / Submitting... (Attempt ${attempt}/${maxRetries})`;
+                statusAlert.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> 正在連線伺服器並寫入訂單... (嘗試 ${attempt}/${maxRetries})`;
+
+                try {
+                    if (!gasEndpoint) {
+                        await new Promise(resolve => setTimeout(resolve, 800));
+                        success = true;
+                        break;
+                    } else {
+                        const response = await fetch(gasEndpoint, {
+                            method: 'POST',
+                            mode: 'cors',
+                            headers: { 'Content-Type': 'text/plain' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            success = true;
+                            break;
+                        } else {
+                            throw new Error(result.message || 'Server busy');
+                        }
+                    }
+                } catch (err) {
+                    console.warn(`Attempt ${attempt} failed:`, err);
+                    if (attempt < maxRetries) {
+                        statusAlert.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> 伺服器繁忙，1 秒後自動重試... (已嘗試 ${attempt}/${maxRetries})`;
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
+            }
+
+            if (success) {
+                submitIcon.className = "fa-solid fa-circle-check";
+                btnText.textContent = "提交成功！ / Submitted Successfully";
+                btn.className = "w-full bg-emerald-500 text-slate-950 font-extrabold py-4 px-6 rounded-2xl shadow-xl transition-all duration-200 text-base flex items-center justify-center space-x-2";
+
+                statusAlert.className = "max-w-lg mx-auto rounded-xl p-4 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-center";
+                statusAlert.innerHTML = `<i class="fa-solid fa-circle-check text-base mr-1"></i> 訂單已成功寫入系統！請截圖保存通行證。 / Order successfully submitted! Please screenshot your pass.`;
+            } else {
+                btn.disabled = false;
+                btnBack.classList.remove('pointer-events-none', 'opacity-50');
+                submitIcon.className = "fa-solid fa-paper-plane";
+                btnText.textContent = "重新提交訂單 / Retry Submission";
+
+                statusAlert.className = "max-w-lg mx-auto rounded-xl p-4 text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/30 text-center";
+                statusAlert.innerHTML = `<i class="fa-solid fa-circle-xmark text-base mr-1"></i> 網絡繁忙或傳送失敗，請稍後再按「重新提交訂單」。 / Network busy. Please try clicking submit again.`;
+            }
+        }
+    </script>
+</body>
+</html>
