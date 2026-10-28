@@ -119,11 +119,11 @@
         <!-- STEP 2: MEAL SELECTION (2-COLUMN LAYOUT) -->
         <section id="step-2" class="hidden space-y-6">
             
-            <!-- McDonald's Price Confirmation Banner Notice -->
+            <!-- Price Notice Banner -->
             <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 flex items-start space-x-3 text-amber-300 text-xs sm:text-sm">
                 <i class="fa-solid fa-circle-info text-amber-400 text-lg flex-shrink-0 mt-0.5"></i>
                 <div class="leading-relaxed">
-                    <strong>提示 / Notice:</strong> 麥當勞餐因選項眾多，CCC會稍候與閣下確實價錢 / McDonald's meal prices will be confirmed later by CCC due to various options.
+                    <strong>提示 / Notice:</strong> 麥當勞套餐已升級精確計價！選擇 1-7 號餐可於下方加選「升級加大套餐 (+ $6.5)」。
                 </div>
             </div>
 
@@ -156,15 +156,15 @@
                                         <option value="G" data-price="67">G. $67 川味回鍋肉（客飯） Sichuan-Style Twice-Cooked Pork (Served with Rice)</option>
                                     </optgroup>
                                     <optgroup label="麥當勞超值套餐 / McDonald's Meals">
-                                        <option value="1" data-price="0">1. 巨無霸餐 Big Mac Meal</option>
-                                        <option value="2" data-price="0">2. 魚柳飽餐 Filet-O-Fish Meal</option>
-                                        <option value="3" data-price="0">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
-                                        <option value="4" data-price="0">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
-                                        <option value="5" data-price="0">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
-                                        <option value="6" data-price="0">6. 脆香雞翼 McWings Meal</option>
-                                        <option value="7" data-price="0">7. 凱撒沙律餐 Caesar Salad Meal</option>
-                                        <option value="8" data-price="0">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
-                                        <option value="9" data-price="0">9. 麥芝蛋飽開心樂園餐 Egg and Cheese Burger Happy Meal</option>
+                                        <option value="1" data-price="47.5">1. $47.5 巨無霸餐 Big Mac Meal</option>
+                                        <option value="2" data-price="43">2. $43.0 魚柳飽餐 Filet-O-Fish Meal</option>
+                                        <option value="3" data-price="47.5">3. $47.5 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
+                                        <option value="4" data-price="30.5">4. $30.5 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
+                                        <option value="5" data-price="29">5. $29.0 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
+                                        <option value="6" data-price="47.5">6. $47.5 脆香雞翼 McWings Meal</option>
+                                        <option value="7" data-price="48">7. $48.0 凱撒沙律餐 Caesar Salad Meal</option>
+                                        <option value="8" data-price="32">8. $32.0 芝士漢堡開心樂園餐 Cheeseburger Happy Meal (不設加大)</option>
+                                        <option value="9" data-price="28.5">9. $28.5 麥芝蛋飽開心樂園餐 Egg and Cheese Burger Happy Meal (不設加大)</option>
                                     </optgroup>
                                     <optgroup label="其他 / Other">
                                         <option value="0" data-price="0">0. 不訂飯 No Lunch Needed</option>
@@ -179,13 +179,29 @@
                                 </select>
                             </div>
 
+                            <!-- Day 1 Cha Chaan Teng No Sugar Option -->
+                            <div id="day1NoSugarWrapper" class="hidden">
+                                <label class="flex items-center space-x-2 bg-slate-900/60 border border-slate-700/60 p-2.5 rounded-xl cursor-pointer mt-2 hover:bg-slate-800 transition">
+                                    <input type="checkbox" id="day1NoSugar" onchange="handleDay1NoSugarChange()" class="w-4 h-4 text-orange-500 rounded focus:ring-0 cursor-pointer">
+                                    <span class="text-xs font-semibold text-slate-200 cursor-pointer">走甜 / No Sugar</span>
+                                </label>
+                            </div>
+
                             <!-- Day 1 Special Request (McDonald's ONLY) -->
                             <div id="day1ReqContainer" class="hidden bg-slate-900/60 border border-slate-700/60 rounded-xl p-3 space-y-2">
-                                <label class="block text-xs font-semibold text-orange-400">麥當勞特別要求 / Special Requests</label>
+                                <label class="block text-xs font-semibold text-orange-400">麥當勞特別要求與選項 / Special Requests</label>
+                                
+                                <!-- Large Meal Checkbox Option A -->
+                                <div id="day1LargeWrapper" class="hidden">
+                                    <label class="flex items-center space-x-2 bg-orange-500/10 border border-orange-500/30 p-2.5 rounded-lg cursor-pointer my-1.5 hover:bg-orange-500/20 transition">
+                                        <input type="checkbox" id="day1IsLarge" onchange="handleDay1LargeChange()" class="w-4 h-4 text-orange-500 rounded focus:ring-0 cursor-pointer">
+                                        <span class="text-xs font-bold text-orange-400 cursor-pointer">升級加大套餐 Upgrade to Large Meal (+ $6.5)</span>
+                                    </label>
+                                </div>
+
                                 <div class="flex flex-wrap gap-1.5 mb-2">
                                     <button type="button" onclick="addQuickTag('day1Req', '薯條轉粟米')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條轉粟米</button>
                                     <button type="button" onclick="addQuickTag('day1Req', '薯條走鹽')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條走鹽</button>
-                                    <button type="button" onclick="addQuickTag('day1Req', '轉大薯大飲品')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 轉大薯大飲</button>
                                     <button type="button" onclick="addQuickTag('day1Req', '飲品走冰')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 飲品走冰</button>
                                 </div>
                                 <input type="text" id="day1Req" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500" placeholder="可自行輸入特別備註...">
@@ -225,15 +241,15 @@
                                         <option value="G" data-price="67">G. $67 京都豬扒（客飯） Peking-Style Pork Chop (Served with Rice)</option>
                                     </optgroup>
                                     <optgroup label="麥當勞超值套餐 / McDonald's Meals">
-                                        <option value="1" data-price="0">1. 巨無霸餐 Big Mac Meal</option>
-                                        <option value="2" data-price="0">2. 魚柳飽餐 Filet-O-Fish Meal</option>
-                                        <option value="3" data-price="0">3. 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
-                                        <option value="4" data-price="0">4. 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
-                                        <option value="5" data-price="0">5. 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
-                                        <option value="6" data-price="0">6. 脆香雞翼 McWings Meal</option>
-                                        <option value="7" data-price="0">7. 凱撒沙律餐 Caesar Salad Meal</option>
-                                        <option value="8" data-price="0">8. 芝士漢堡開心樂園餐 Cheeseburger Happy Meal</option>
-                                        <option value="9" data-price="0">9. 麥芝蛋飽開心樂園餐 Egg and Cheese Burger Happy Meal</option>
+                                        <option value="1" data-price="47.5">1. $47.5 巨無霸餐 Big Mac Meal</option>
+                                        <option value="2" data-price="43">2. $43.0 魚柳飽餐 Filet-O-Fish Meal</option>
+                                        <option value="3" data-price="47.5">3. $47.5 脆辣雞腿飽餐 McSpicy Chicken Filet Meal</option>
+                                        <option value="4" data-price="30.5">4. $30.5 豬柳蛋漢堡餐 Sausage McMuffin with Egg Meal</option>
+                                        <option value="5" data-price="29">5. $29.0 麥樂雞餐 (6件) McNuggets Meal (6pcs)</option>
+                                        <option value="6" data-price="47.5">6. $47.5 脆香雞翼 McWings Meal</option>
+                                        <option value="7" data-price="48">7. $48.0 凱撒沙律餐 Caesar Salad Meal</option>
+                                        <option value="8" data-price="32">8. $32.0 芝士漢堡開心樂園餐 Cheeseburger Happy Meal (不設加大)</option>
+                                        <option value="9" data-price="28.5">9. $28.5 麥芝蛋飽開心樂園餐 Egg and Cheese Burger Happy Meal (不設加大)</option>
                                     </optgroup>
                                     <optgroup label="其他 / Other">
                                         <option value="0" data-price="0">0. 不訂飯 No Lunch Needed</option>
@@ -251,13 +267,29 @@
                                 </select>
                             </div>
 
+                            <!-- Day 2 Cha Chaan Teng No Sugar Option -->
+                            <div id="day2NoSugarWrapper" class="hidden">
+                                <label class="flex items-center space-x-2 bg-slate-900/60 border border-slate-700/60 p-2.5 rounded-xl cursor-pointer mt-2 hover:bg-slate-800 transition">
+                                    <input type="checkbox" id="day2NoSugar" onchange="handleDay2NoSugarChange()" class="w-4 h-4 text-orange-500 rounded focus:ring-0 cursor-pointer">
+                                    <span class="text-xs font-semibold text-slate-200 cursor-pointer">走甜 / No Sugar</span>
+                                </label>
+                            </div>
+
                             <!-- Day 2 Special Request (McDonald's ONLY) -->
                             <div id="day2ReqContainer" class="hidden bg-slate-900/60 border border-slate-700/60 rounded-xl p-3 space-y-2">
-                                <label class="block text-xs font-semibold text-orange-400">麥當勞特別要求 / Special Requests</label>
+                                <label class="block text-xs font-semibold text-orange-400">麥當勞特別要求與選項 / Special Requests</label>
+                                
+                                <!-- Large Meal Checkbox Option A -->
+                                <div id="day2LargeWrapper" class="hidden">
+                                    <label class="flex items-center space-x-2 bg-orange-500/10 border border-orange-500/30 p-2.5 rounded-lg cursor-pointer my-1.5 hover:bg-orange-500/20 transition">
+                                        <input type="checkbox" id="day2IsLarge" onchange="handleDay2LargeChange()" class="w-4 h-4 text-orange-500 rounded focus:ring-0 cursor-pointer">
+                                        <span class="text-xs font-bold text-orange-400 cursor-pointer">升級加大套餐 Upgrade to Large Meal (+ $6.5)</span>
+                                    </label>
+                                </div>
+
                                 <div class="flex flex-wrap gap-1.5 mb-2">
                                     <button type="button" onclick="addQuickTag('day2Req', '薯條轉粟米')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條轉粟米</button>
                                     <button type="button" onclick="addQuickTag('day2Req', '薯條走鹽')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 薯條走鹽</button>
-                                    <button type="button" onclick="addQuickTag('day2Req', '轉大薯大飲品')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 轉大薯大飲</button>
                                     <button type="button" onclick="addQuickTag('day2Req', '飲品走冰')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded text-[11px] transition">+ 飲品走冰</button>
                                 </div>
                                 <input type="text" id="day2Req" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-orange-500" placeholder="可自行輸入特別備註...">
@@ -371,7 +403,6 @@
                     <div class="flex items-center justify-between pt-1">
                         <div>
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">預計總金額 / Total</span>
-                            <p class="text-[10px] text-slate-400">*麥當勞餐最終金額由CCC確認</p>
                         </div>
                         <div id="ticketGrandTotal" class="text-3xl font-black text-orange-600">$118</div>
                     </div>
@@ -401,6 +432,24 @@
         </section>
 
     </main>
+
+    <!-- SUCCESS POPUP MODAL -->
+    <div id="successModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-all duration-300">
+        <div class="bg-slate-900 border-2 border-emerald-500 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
+            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-white mb-2">🎉 提交成功 / Order Submitted!</h3>
+                <p class="text-sm font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 leading-relaxed text-left sm:text-center">
+                    恭喜你已經成功訂飯！（本校教師同事留意，記得要向校務處淑琳交錢，陸運會先會有飯食！）
+                </p>
+            </div>
+            <button type="button" onclick="closeSuccessModal()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3.5 px-6 rounded-xl shadow-lg transition duration-200 text-base">
+                我知道了 / Understood
+            </button>
+        </div>
+    </div>
 
     <!-- DEVELOPER & GAS FAILSAFE BACKEND DRAWER PANEL -->
     <footer class="max-w-4xl mx-auto px-4 w-full mt-8">
@@ -491,14 +540,15 @@
             { id: 'NONE', label: '無飲品 / No Drink', price: 0 }
         ];
 
+        // McDonald's Drinks with Normal vs Large Upgrade Extra Prices
         const MCDONALDS_DRINKS = [
-            { id: 'MCD_COKE', label: '可口可樂 (中) Coca-Cola (M)', price: 0 },
-            { id: 'MCD_ZERO', label: '零度可樂 (中) Coca-Cola Zero (M)', price: 0 },
-            { id: 'MCD_SPRITE', label: '雪碧 (中) Sprite (M)', price: 0 },
-            { id: 'MCD_HOT_TEA', label: '熱檸茶 Hot Lemon Tea (預設小甜)', price: 0 },
-            { id: 'MCD_ICED_TEA', label: '凍檸茶 Iced Lemon Tea (預設小甜)', price: 0 },
-            { id: 'MCD_HOT_COFFEE', label: '熱咖啡 Hot Coffee', price: 0 },
-            { id: 'MCD_JUICE', label: '橙汁 (中) Orange Juice (M)', price: 0 }
+            { id: 'MCD_COKE', label: '可口可樂 (中) Coca-Cola (M)', priceNormal: 0, priceLarge: 0 },
+            { id: 'MCD_ZERO', label: '零度可樂 (中) Coca-Cola Zero (M)', priceNormal: 0, priceLarge: 0 },
+            { id: 'MCD_SPRITE', label: '雪碧 (中) Sprite (M)', priceNormal: 0, priceLarge: 0 },
+            { id: 'MCD_HOT_TEA', label: '熱檸茶 Hot Lemon Tea (預設小甜)', priceNormal: 0, priceLarge: 0 },
+            { id: 'MCD_ICED_TEA', label: '凍檸茶 Iced Lemon Tea (預設小甜)', priceNormal: 6, priceLarge: 3 },
+            { id: 'MCD_HOT_COFFEE', label: '熱咖啡 Hot Coffee', priceNormal: 3, priceLarge: 3 },
+            { id: 'MCD_JUICE', label: '橙汁 (中) Orange Juice (M)', priceNormal: 6, priceLarge: 6 }
         ];
 
         // State Management & Default Hardcoded API URL
@@ -528,7 +578,7 @@
 
             document.getElementById('gasUrlInput').value = gasEndpoint;
 
-            // Populate initial drinks
+            // Populate initial drinks & calculate
             renderDrinksForDay(1);
             renderDrinksForDay(2);
             calculateTotals();
@@ -565,36 +615,63 @@
             alert('GAS 後端程式碼已複製至剪貼簿！');
         }
 
-        // Helper: Check if meal is McDonald's
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        // Helper: Check meal types
         function isMcDonalds(mealVal) {
             return ['1','2','3','4','5','6','7','8','9'].includes(mealVal);
         }
 
-        // Render Drink Options
+        function isMcDCanLarge(mealVal) {
+            return ['1','2','3','4','5','6','7'].includes(mealVal);
+        }
+
+        // Render Drink Options with Dynamic Prices
         function renderDrinksForDay(day) {
             const mealVal = document.getElementById(`day${day}Meal`).value;
             const drinkSelect = document.getElementById(`day${day}Drink`);
             const reqContainer = document.getElementById(`day${day}ReqContainer`);
             const drinkWrapper = document.getElementById(`day${day}DrinkWrapper`);
+            const largeWrapper = document.getElementById(`day${day}LargeWrapper`);
+            const noSugarWrapper = document.getElementById(`day${day}NoSugarWrapper`);
+            const isLargeChecked = document.getElementById(`day${day}IsLarge`).checked;
 
             drinkSelect.innerHTML = '';
 
             if (mealVal === '0') {
                 drinkWrapper.classList.add('hidden');
                 reqContainer.classList.add('hidden');
+                noSugarWrapper.classList.add('hidden');
             } else if (isMcDonalds(mealVal)) {
                 drinkWrapper.classList.remove('hidden');
                 reqContainer.classList.remove('hidden');
+                noSugarWrapper.classList.add('hidden');
+
+                // Large Meal Option Toggle Visibility
+                if (isMcDCanLarge(mealVal)) {
+                    largeWrapper.classList.remove('hidden');
+                } else {
+                    largeWrapper.classList.add('hidden');
+                    document.getElementById(`day${day}IsLarge`).checked = false;
+                }
+
                 MCDONALDS_DRINKS.forEach(d => {
+                    const extraPrice = isLargeChecked ? d.priceLarge : d.priceNormal;
                     const opt = document.createElement('option');
                     opt.value = d.id;
-                    opt.textContent = d.label;
-                    opt.dataset.price = d.price;
+                    opt.textContent = d.label + (extraPrice > 0 ? ` (+$${extraPrice})` : '');
+                    opt.dataset.price = extraPrice;
                     drinkSelect.appendChild(opt);
                 });
             } else {
                 drinkWrapper.classList.remove('hidden');
                 reqContainer.classList.add('hidden');
+                largeWrapper.classList.add('hidden');
+                document.getElementById(`day${day}IsLarge`).checked = false;
+                noSugarWrapper.classList.remove('hidden');
+
                 CHA_CHAAN_TENG_DRINKS.forEach(d => {
                     const opt = document.createElement('option');
                     opt.value = d.id;
@@ -605,7 +682,7 @@
             }
         }
 
-        // Event Handlers for Meals & Drinks
+        // Event Handlers
         function handleDay1MealChange() {
             renderDrinksForDay(1);
             if (!day2DrinkManuallyTouched) {
@@ -617,6 +694,27 @@
         function handleDay2MealChange() {
             renderDrinksForDay(2);
             calculateTotals();
+        }
+
+        function handleDay1LargeChange() {
+            renderDrinksForDay(1);
+            calculateTotals();
+        }
+
+        function handleDay2LargeChange() {
+            renderDrinksForDay(2);
+            calculateTotals();
+        }
+
+        function handleDay1NoSugarChange() {
+            if (!day2DrinkManuallyTouched) {
+                syncDay1DrinkToDay2();
+            }
+        }
+
+        function handleDay2NoSugarChange() {
+            day2DrinkManuallyTouched = true;
+            document.getElementById('autoSyncBadge').classList.add('hidden');
         }
 
         function handleDay1DrinkChange() {
@@ -639,6 +737,10 @@
             if (isMcDonalds(day1Meal) === isMcDonalds(day2Meal) && day1Meal !== '0' && day2Meal !== '0') {
                 const day1DrinkVal = document.getElementById('day1Drink').value;
                 document.getElementById('day2Drink').value = day1DrinkVal;
+
+                if (!isMcDonalds(day1Meal)) {
+                    document.getElementById('day2NoSugar').checked = document.getElementById('day1NoSugar').checked;
+                }
             }
         }
 
@@ -652,37 +754,44 @@
             }
         }
 
+        function formatPriceNum(num) {
+            return Number.isInteger(num) ? num.toString() : num.toFixed(1);
+        }
+
         function calculateTotals() {
             // Day 1
             const day1MealSelect = document.getElementById('day1Meal');
             const day1MealOpt = day1MealSelect.options[day1MealSelect.selectedIndex];
-            const day1BasePrice = parseInt(day1MealOpt.dataset.price || '0');
+            const day1BasePrice = parseFloat(day1MealOpt.dataset.price || '0');
+            const day1IsLarge = document.getElementById('day1IsLarge').checked;
+            const day1LargeAdd = (isMcDCanLarge(day1MealSelect.value) && day1IsLarge) ? 6.5 : 0;
             
             const day1DrinkSelect = document.getElementById('day1Drink');
             let day1DrinkPrice = 0;
             if (day1DrinkSelect && day1DrinkSelect.selectedIndex >= 0) {
-                day1DrinkPrice = parseInt(day1DrinkSelect.options[day1DrinkSelect.selectedIndex].dataset.price || '0');
+                day1DrinkPrice = parseFloat(day1DrinkSelect.options[day1DrinkSelect.selectedIndex].dataset.price || '0');
             }
-            const day1Total = day1MealSelect.value === '0' ? 0 : (day1BasePrice + day1DrinkPrice);
-            document.getElementById('day1Subtotal').textContent = isMcDonalds(day1MealSelect.value) ? '待確認 / TBD' : `$${day1Total}`;
+            const day1Total = day1MealSelect.value === '0' ? 0 : (day1BasePrice + day1LargeAdd + day1DrinkPrice);
+            document.getElementById('day1Subtotal').textContent = `$${formatPriceNum(day1Total)}`;
 
             // Day 2
             const day2MealSelect = document.getElementById('day2Meal');
             const day2MealOpt = day2MealSelect.options[day2MealSelect.selectedIndex];
-            const day2BasePrice = parseInt(day2MealOpt.dataset.price || '0');
+            const day2BasePrice = parseFloat(day2MealOpt.dataset.price || '0');
+            const day2IsLarge = document.getElementById('day2IsLarge').checked;
+            const day2LargeAdd = (isMcDCanLarge(day2MealSelect.value) && day2IsLarge) ? 6.5 : 0;
 
             const day2DrinkSelect = document.getElementById('day2Drink');
             let day2DrinkPrice = 0;
             if (day2DrinkSelect && day2DrinkSelect.selectedIndex >= 0) {
-                day2DrinkPrice = parseInt(day2DrinkSelect.options[day2DrinkSelect.selectedIndex].dataset.price || '0');
+                day2DrinkPrice = parseFloat(day2DrinkSelect.options[day2DrinkSelect.selectedIndex].dataset.price || '0');
             }
-            const day2Total = day2MealSelect.value === '0' ? 0 : (day2BasePrice + day2DrinkPrice);
-            document.getElementById('day2Subtotal').textContent = isMcDonalds(day2MealSelect.value) ? '待確認 / TBD' : `$${day2Total}`;
+            const day2Total = day2MealSelect.value === '0' ? 0 : (day2BasePrice + day2LargeAdd + day2DrinkPrice);
+            document.getElementById('day2Subtotal').textContent = `$${formatPriceNum(day2Total)}`;
 
             // Grand Total
             const grandTotal = day1Total + day2Total;
-            const isAnyMcD = isMcDonalds(day1MealSelect.value) || isMcDonalds(day2MealSelect.value);
-            document.getElementById('grandTotalDisplay').textContent = isAnyMcD ? `$${grandTotal} + 麥當勞待確認` : `$${grandTotal}`;
+            document.getElementById('grandTotalDisplay').textContent = `$${formatPriceNum(grandTotal)}`;
 
             return { day1Total, day2Total, grandTotal };
         }
@@ -724,38 +833,54 @@
             const initial = document.getElementById('initialInput').value.trim();
             document.getElementById('ticketInitial').textContent = initial;
 
-            // Day 1
+            // Day 1 Ticket Summary
             const d1MealSelect = document.getElementById('day1Meal');
             const d1MealText = d1MealSelect.options[d1MealSelect.selectedIndex].text;
             const d1DrinkSelect = document.getElementById('day1Drink');
-            const d1DrinkText = d1DrinkSelect && d1DrinkSelect.selectedIndex >= 0 ? d1DrinkSelect.options[d1DrinkSelect.selectedIndex].text : '無飲品';
-            const d1Req = document.getElementById('day1Req').value.trim();
+            let d1DrinkText = d1DrinkSelect && d1DrinkSelect.selectedIndex >= 0 ? d1DrinkSelect.options[d1DrinkSelect.selectedIndex].text : '無飲品';
+            if (!isMcDonalds(d1MealSelect.value) && d1MealSelect.value !== '0' && document.getElementById('day1NoSugar').checked) {
+                d1DrinkText += ' (走甜)';
+            }
+
+            const d1IsLarge = document.getElementById('day1IsLarge').checked;
+            let d1ReqText = document.getElementById('day1Req').value.trim();
+            if (d1IsLarge) {
+                d1ReqText = d1ReqText ? `[升級加大套餐 / Large Meal] ${d1ReqText}` : '[升級加大套餐 / Large Meal]';
+            }
             
             document.getElementById('ticketDay1Meal').textContent = d1MealText;
             document.getElementById('ticketDay1Drink').querySelector('span').textContent = d1DrinkText;
             document.getElementById('ticketDay1Price').textContent = document.getElementById('day1Subtotal').textContent;
             
-            if (d1Req && isMcDonalds(d1MealSelect.value)) {
+            if (d1ReqText && isMcDonalds(d1MealSelect.value)) {
                 document.getElementById('ticketDay1ReqWrapper').classList.remove('hidden');
-                document.getElementById('ticketDay1Req').textContent = d1Req;
+                document.getElementById('ticketDay1Req').textContent = d1ReqText;
             } else {
                 document.getElementById('ticketDay1ReqWrapper').classList.add('hidden');
             }
 
-            // Day 2
+            // Day 2 Ticket Summary
             const d2MealSelect = document.getElementById('day2Meal');
             const d2MealText = d2MealSelect.options[d2MealSelect.selectedIndex].text;
             const d2DrinkSelect = document.getElementById('day2Drink');
-            const d2DrinkText = d2DrinkSelect && d2DrinkSelect.selectedIndex >= 0 ? d2DrinkSelect.options[d2DrinkSelect.selectedIndex].text : '無飲品';
-            const d2Req = document.getElementById('day2Req').value.trim();
+            let d2DrinkText = d2DrinkSelect && d2DrinkSelect.selectedIndex >= 0 ? d2DrinkSelect.options[d2DrinkSelect.selectedIndex].text : '無飲品';
+            if (!isMcDonalds(d2MealSelect.value) && d2MealSelect.value !== '0' && document.getElementById('day2NoSugar').checked) {
+                d2DrinkText += ' (走甜)';
+            }
+
+            const d2IsLarge = document.getElementById('day2IsLarge').checked;
+            let d2ReqText = document.getElementById('day2Req').value.trim();
+            if (d2IsLarge) {
+                d2ReqText = d2ReqText ? `[升級加大套餐 / Large Meal] ${d2ReqText}` : '[升級加大套餐 / Large Meal]';
+            }
 
             document.getElementById('ticketDay2Meal').textContent = d2MealText;
             document.getElementById('ticketDay2Drink').querySelector('span').textContent = d2DrinkText;
             document.getElementById('ticketDay2Price').textContent = document.getElementById('day2Subtotal').textContent;
 
-            if (d2Req && isMcDonalds(d2MealSelect.value)) {
+            if (d2ReqText && isMcDonalds(d2MealSelect.value)) {
                 document.getElementById('ticketDay2ReqWrapper').classList.remove('hidden');
-                document.getElementById('ticketDay2Req').textContent = d2Req;
+                document.getElementById('ticketDay2Req').textContent = d2ReqText;
             } else {
                 document.getElementById('ticketDay2ReqWrapper').classList.add('hidden');
             }
@@ -773,14 +898,38 @@
             const d1DrinkElem = document.getElementById('day1Drink');
             const d2DrinkElem = document.getElementById('day2Drink');
 
+            const d1MealSelect = document.getElementById('day1Meal');
+            const d1IsLarge = document.getElementById('day1IsLarge').checked;
+            let d1ReqText = document.getElementById('day1Req').value.trim();
+            if (d1IsLarge && isMcDCanLarge(d1MealSelect.value)) {
+                d1ReqText = d1ReqText ? `[升級加大套餐] ${d1ReqText}` : '[升級加大套餐]';
+            }
+
+            const d2MealSelect = document.getElementById('day2Meal');
+            const d2IsLarge = document.getElementById('day2IsLarge').checked;
+            let d2ReqText = document.getElementById('day2Req').value.trim();
+            if (d2IsLarge && isMcDCanLarge(d2MealSelect.value)) {
+                d2ReqText = d2ReqText ? `[升級加大套餐] ${d2ReqText}` : '[升級加大套餐]';
+            }
+
+            let d1DrinkValText = d1DrinkElem && d1DrinkElem.options.length > 0 && d1DrinkElem.selectedIndex >= 0 ? d1DrinkElem.options[d1DrinkElem.selectedIndex].text : 'N/A';
+            if (!isMcDonalds(d1MealSelect.value) && d1MealSelect.value !== '0' && document.getElementById('day1NoSugar').checked && d1DrinkValText !== 'N/A') {
+                d1DrinkValText += ' (走甜)';
+            }
+
+            let d2DrinkValText = d2DrinkElem && d2DrinkElem.options.length > 0 && d2DrinkElem.selectedIndex >= 0 ? d2DrinkElem.options[d2DrinkElem.selectedIndex].text : 'N/A';
+            if (!isMcDonalds(d2MealSelect.value) && d2MealSelect.value !== '0' && document.getElementById('day2NoSugar').checked && d2DrinkValText !== 'N/A') {
+                d2DrinkValText += ' (走甜)';
+            }
+
             const payload = {
                 initial: document.getElementById('initialInput').value.trim(),
-                day1Meal: document.getElementById('day1Meal').options[document.getElementById('day1Meal').selectedIndex].text,
-                day1Drink: d1DrinkElem && d1DrinkElem.options.length > 0 && d1DrinkElem.selectedIndex >= 0 ? d1DrinkElem.options[d1DrinkElem.selectedIndex].text : 'N/A',
-                day1Req: document.getElementById('day1Req').value.trim() || 'N/A',
-                day2Meal: document.getElementById('day2Meal').options[document.getElementById('day2Meal').selectedIndex].text,
-                day2Drink: d2DrinkElem && d2DrinkElem.options.length > 0 && d2DrinkElem.selectedIndex >= 0 ? d2DrinkElem.options[d2DrinkElem.selectedIndex].text : 'N/A',
-                day2Req: document.getElementById('day2Req').value.trim() || 'N/A',
+                day1Meal: d1MealSelect.options[d1MealSelect.selectedIndex].text,
+                day1Drink: d1DrinkValText,
+                day1Req: d1ReqText || 'N/A',
+                day2Meal: d2MealSelect.options[d2MealSelect.selectedIndex].text,
+                day2Drink: d2DrinkValText,
+                day2Req: d2ReqText || 'N/A',
                 totalEst: document.getElementById('grandTotalDisplay').textContent
             };
 
@@ -827,6 +976,9 @@
 
                 statusAlert.className = "max-w-lg mx-auto rounded-xl p-4 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-center";
                 statusAlert.innerHTML = `<i class="fa-solid fa-circle-check text-base mr-1"></i> 訂單已成功寫入 Google Sheet！請截圖保存通行證。 / Order successfully submitted! Please screenshot your pass.`;
+
+                // Show green popup modal
+                document.getElementById('successModal').classList.remove('hidden');
             } else {
                 btn.disabled = false;
                 btnBack.classList.remove('pointer-events-none', 'opacity-50');
